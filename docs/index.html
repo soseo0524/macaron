@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MACARON — Autonomous Driving R&D Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --bg2:       #10101a;
+      --bg3:       #16162a;
+      --accent:    #4f8ef7;
+      --accent2:   #7c4dff;
+      --text:      #e8eaf0;
+      --muted:     #7a7f9a;
+      --border:    rgba(255,255,255,0.07);
+      --glow:      rgba(79,142,247,0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 68px;
+      background: rgba(10,10,15,0.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #fff;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-logo:hover { opacity: 0.75; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #fff; }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 0.42rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 600 !important;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── HERO ── */
+    #home {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    /* fullscreen video */
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+
+    /* gradient overlay: left darker for text, right shows video */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right,
+          rgba(5,5,10,0.78) 0%,
+          rgba(5,5,10,0.45) 55%,
+          rgba(5,5,10,0.1)  100%),
+        linear-gradient(to top,
+          rgba(5,5,10,0.7) 0%,
+          transparent 40%);
+      z-index: 1;
+    }
+
+    /* text content — left aligned, bottom-ish */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 6% 8vh;
+      max-width: 720px;
+      animation: heroFadeUp 1s ease both;
+    }
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(79,142,247,0.15);
+      border: 1px solid rgba(79,142,247,0.4);
+      border-radius: 100px;
+      padding: 0.38rem 1rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.6rem;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 3.7rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.4);
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+      color: rgba(232,234,240,0.75);
+      line-height: 1.8;
+      margin-bottom: 2.4rem;
+      max-width: 560px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: #fff;
+      color: #0a0a0f;
+      border: none;
+      padding: 0.9rem 2.4rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .btn-primary:hover {
+      background: #e8eaf0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      padding: 0.9rem 2.4rem;
+      border-radius: 100px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.9);
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+    }
+
+    /* scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.2rem;
+      right: 5%;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(7px); }
+    }
+
+    /* hero stats bar at very bottom */
+    .hero-stats-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: flex-start;
+      gap: 0;
+      padding: 0 6%;
+      pointer-events: none;
+    }
+    .stat {
+      padding: 1.2rem 2.5rem 1.4rem 0;
+      border-right: 1px solid rgba(255,255,255,0.1);
+      margin-right: 2.5rem;
+    }
+    .stat:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section { padding: 100px 5%; }
+
+    .section-tag {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 580px;
+      line-height: 1.75;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+
+    .about-header,
+    .divisions-grid,
+    .awards-section {
+      width: min(100%, calc(100vw * 5 / 7));
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .about-header { margin-bottom: 4.75rem; }
+
+    .divisions-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4.25rem;
+      margin-bottom: 5rem;
+    }
+
+    .division-card {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.92fr) minmax(560px, 1.08fr);
+      gap: clamp(3.5rem, 5vw, 6rem);
+      align-items: start;
+      padding: 2.5rem 0;
+    }
+
+    .division-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.65rem;
+      max-width: 560px;
+      padding-top: 0.25rem;
+    }
+
+    .division-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+    }
+
+    .division-kicker {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+
+    .division-kicker::before {
+      content: '';
+      width: 8px;
+      min-width: 8px;
+      height: 172px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 18px rgba(79,142,247,0.35);
+      margin-top: 0.15rem;
+    }
+
+    .division-kicker-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.95rem;
+    }
+
+    .division-label {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.82);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      line-height: 1.1;
+    }
+
+    .division-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.775rem, 4.275vw, 4.2rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+
+    .division-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.9;
+      max-width: 32rem;
+    }
+
+    .division-media {
+      position: relative;
+      width: 100%;
+      max-width: 650px;
+      aspect-ratio: 4 / 3;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02)),
+        radial-gradient(circle at top right, rgba(79,142,247,0.24), transparent 45%),
+        #11161f;
+      overflow: hidden;
+      box-shadow: 0 28px 60px rgba(0,0,0,0.32);
+      justify-self: end;
+    }
+
+    .division-card-reverse .division-content {
+      order: 2;
+    }
+
+    .division-card-reverse .division-media {
+      order: 1;
+      justify-self: start;
+    }
+
+    .division-media video,
+    .division-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hardware-media .division-slide video {
+      object-fit: contain;
+      background: #05070c;
+    }
+
+    .division-slideshow {
+      position: absolute;
+      inset: 0;
+    }
+
+    .division-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: hardwareSlideshow 12s infinite;
+    }
+
+    .division-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .division-slide:nth-child(1) { animation-delay: 0s; }
+    .division-slide:nth-child(2) { animation-delay: 2s; }
+    .division-slide:nth-child(3) { animation-delay: 4s; }
+    .division-slide:nth-child(4) { animation-delay: 6s; }
+    .division-slide:nth-child(5) { animation-delay: 8s; }
+    .division-slide:nth-child(6) { animation-delay: 10s; }
+
+    @keyframes hardwareSlideshow {
+      0% { opacity: 0; }
+      5% { opacity: 1; }
+      16.66% { opacity: 1; }
+      21.66% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .division-media-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.4rem;
+      background:
+        linear-gradient(180deg, rgba(8,10,15,0.15), rgba(8,10,15,0.75)),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(255,255,255,0.03) 0,
+          rgba(255,255,255,0.03) 12px,
+          transparent 12px,
+          transparent 24px
+        );
+    }
+
+    .division-media-tag,
+    .division-media-hint {
+      align-self: flex-start;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(7,10,16,0.38);
+      padding: 0.45rem 0.7rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .division-media-hint {
+      letter-spacing: 0.04em;
+      text-transform: none;
+      line-height: 1.5;
+      max-width: 18rem;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .hardware-media .division-media-placeholder {
+      background: linear-gradient(180deg, rgba(8,10,15,0.08), rgba(8,10,15,0.38));
+      pointer-events: none;
+    }
+
+    @media (max-width: 980px) {
+      .division-card {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1rem 0 1.5rem;
+      }
+
+      .division-content,
+      .division-desc {
+        max-width: none;
+      }
+
+      .division-media {
+        width: 100%;
+        max-width: none;
+        justify-self: stretch;
+      }
+
+      .division-card-reverse .division-content,
+      .division-card-reverse .division-media {
+        order: initial;
+      }
+
+      .division-kicker::before {
+        height: 88px;
+      }
+
+      .division-name {
+        font-size: clamp(2.8rem, 10vw, 4.4rem);
+      }
+
+      .division-label,
+      .division-desc {
+        font-size: 1rem;
+      }
+    }
+
+    /* Awards — timeline style */
+    .awards-section {
+      margin-top: 1rem;
+    }
+
+    .awards-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .awards-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .awards-timeline {
+      display: flex;
+      flex-direction: column;
+      border-left: 2px solid rgba(255,255,255,0.1);
+      margin-left: 4rem;
+    }
+    .award-row {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 3rem;
+      align-items: flex-start;
+      padding: 2.5rem 0 2.5rem 3rem;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.25s;
+    }
+    .award-row:last-child { border-bottom: none; }
+    .award-row:hover { background: rgba(255,255,255,0.02); }
+    .award-row::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 2.9rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--bg2);
+      border: 2px solid rgba(255,255,255,0.2);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .award-row:hover::before {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(79,142,247,0.5);
+    }
+    .award-year-big {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1;
+      padding-top: 0.15rem;
+    }
+    .award-items-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .award-items-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      font-size: 1rem;
+      color: rgba(232,234,240,0.82);
+      line-height: 1.55;
+    }
+    .award-items-list li::before {
+      content: '•';
+      color: rgba(255,255,255,0.3);
+      font-size: 1.1rem;
+      margin-top: 0.1rem;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 600px) {
+      .awards-timeline { margin-left: 1rem; }
+      .award-row { grid-template-columns: 1fr; gap: 0.5rem; padding: 2rem 0 2rem 2rem; }
+      .award-year-big { font-size: 1.8rem; }
+    }
+
+    /* ── SPONSOR ── */
+    #sponsor { background: var(--bg); }
+
+    .sponsor-logos {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 4rem;
+      margin-top: 3.5rem;
+    }
+
+    .sponsor-logo-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      transition: opacity 0.25s, transform 0.25s;
+      opacity: 1;
+    }
+    .sponsor-logo-link:hover {
+      opacity: 0.85;
+      transform: translateY(-3px);
+    }
+    .sponsor-logo-img {
+      height: 56px;
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .sponsor-divider {
+      width: 1px;
+      height: 48px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+
+    /* ── NEWS ── */
+    #news {
+      background: var(--bg2);
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    #news > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    #news::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(6,8,14,0.94) 0%, rgba(6,8,14,0.72) 35%, rgba(6,8,14,0.9) 100%),
+        url('assets/news-award.jpeg') center center / cover no-repeat;
+      opacity: 0;
+      transform: scale(1.04);
+      transition: opacity 1.2s ease, transform 1.6s ease;
+      z-index: 0;
+    }
+
+    #news.is-visible::before {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .news-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 3rem;
+    }
+    .news-card {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0;
+      padding: 1.35rem 0;
+      transition: border-color 0.3s, padding-left 0.3s;
+    }
+    .news-card:first-child {
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .news-card:hover {
+      border-color: rgba(79,142,247,0.45);
+      padding-left: 0.35rem;
+    }
+    .news-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+    .news-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0;
+      border-radius: 0;
+    }
+    .tag-done { color: #32c878; }
+    .tag-upcoming { color: var(--accent); }
+    .tag-prep { color: #ffb432; }
+    .news-date { font-size: 0.8rem; color: var(--muted); }
+    .news-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.5;
+      margin-bottom: 0.45rem;
+    }
+    .news-body {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 52rem;
+    }
+
+    #news.is-visible .news-title,
+    #news.is-visible .news-body,
+    #news.is-visible .news-date,
+    #news.is-visible .section-title,
+    #news.is-visible .section-desc,
+    #news.is-visible .upcoming-title,
+    #news.is-visible .tl-label {
+      text-shadow: 0 10px 28px rgba(0,0,0,0.38);
+    }
+
+    /* upcoming timeline */
+    .upcoming-section { margin-top: 4rem; }
+    .upcoming-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border-left: 2px solid var(--border);
+      margin-left: 1rem;
+      padding-left: 2rem;
+    }
+    .tl-item {
+      position: relative;
+      padding: 0.6rem 0 1.2rem;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -2.6rem;
+      top: 0.75rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg2);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .tl-label {
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); }
+    .contact-link-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      background: rgba(79,142,247,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    .contact-link-info { flex: 1; }
+    .contact-link-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .contact-link-val { font-size: 0.95rem; color: #fff; font-weight: 500; margin-top: 0.1rem; }
+
+    .contact-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-top: 1rem;
+    }
+    .contact-gen {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo img {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.55;
+    }
+    .footer-right { font-size: 0.82rem; color: var(--muted); }
+
+
+    /* ── MOBILE NAV ── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 48px;
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#home">MACARON</a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#sponsor">Sponsor</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <!-- 배경 영상 -->
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="web.mp4" type="video/mp4">
+  </video>
+
+  <!-- 그라데이션 오버레이 -->
+  <div class="hero-overlay"></div>
+
+  <!-- 텍스트 콘텐츠 (좌측 하단) -->
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Driving the Future,<br>Beyond the Road.
+    </h1>
+    <p class="hero-desc">
+      MACARON is an autonomous driving R&amp;D team under MAC,
+      dedicated to building real-world self-driving systems —
+      from algorithm design to full-scale vehicle testing, on the road.
+    </p>
+    <div class="hero-buttons">
+      <a href="#about" class="btn-primary">About US</a>
+      <a href="#contact" class="btn-outline">Contact Us</a>
+    </div>
+  </div>
+
+  <!-- 스크롤 유도 -->
+  <a href="#about" class="hero-scroll">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    Scroll
+  </a>
+
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-header">
+    <p class="section-tag">Who We Are</p>
+    <h2 class="section-title">Perception · Planning · Control.</h2>
+    <div class="divider"></div>
+    <p class="section-desc">MACARON은 자율주행의 전 단계를 직접 개발하고, 실차 위에서 완성합니다. </p>
+  </div>
+
+  <div class="divisions-grid">
+    <div class="division-card">
+      <div class="division-content">
+        <div class="division-copy">
+          <div class="division-kicker">
+            <div class="division-kicker-text">
+              <div class="division-label">Truly lifelike</div>
+              <h3 class="division-name">Vision<br>System</h3>
+            </div>
+          </div>
+          <div class="division-desc">
+            라이다, 카메라 등 다양한 센서 데이터를 활용해 주변 환경을 정밀하게 인지하고, 자율주행 판단에 필요한 객체와 도로 정보를 안정적으로 추출합니다.
+          </div>
+        </div>
+      </div>
+      <div class="division-media vision-media">
+        <video autoplay muted loop playsinline>
+          <source src="assets/videos/vision.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="division-card division-card-reverse">
+      <div class="division-content">
+        <div class="division-copy">
+          <div class="division-kicker">
+            <div class="division-kicker-text">
+              <div class="division-label">Real-time decisions</div>
+              <h3 class="division-name">Planning<br>Logic</h3>
+            </div>
+          </div>
+          <div class="division-desc">
+            GPS와 IMU 기반 위치 추정 결과를 바탕으로, 차량이 주행해야 할 경로와 행동을 실시간으로 계획하여 안전하고 효율적인 주행을 만듭니다.
+          </div>
+        </div>
+      </div>
+      <div class="division-media planning-media">
+        <video autoplay muted loop playsinline>
+          <source src="assets/videos/planning.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="division-card">
+      <div class="division-content">
+        <div class="division-copy">
+          <div class="division-kicker">
+            <div class="division-kicker-text">
+              <div class="division-label">Built for the field</div>
+              <h3 class="division-name">Hardware<br>Operation</h3>
+            </div>
+          </div>
+          <div class="division-desc">
+            차량 하드웨어와 센서 시스템을 직접 관리하고, 대회 운영과 문서화까지 담당해 실차 테스트와 현장 주행이 안정적으로 이어지도록 지원합니다.
+          </div>
+        </div>
+      </div>
+      <div class="division-media hardware-media">
+        <div class="division-slideshow" aria-label="Hardware photo slideshow">
+          <div class="division-slide">
+            <img src="assets/hardware/hardware.jpg" alt="Hardware setup detail">
+          </div>
+          <div class="division-slide">
+            <img src="assets/hardware/hardware2.jpg" alt="Hardware vehicle chassis">
+          </div>
+          <div class="division-slide">
+            <img src="assets/hardware/hardware3.jpg" alt="Hardware control box">
+          </div>
+          <div class="division-slide">
+            <img src="assets/hardware/hardware4.jpg" alt="Hardware field test platform">
+          </div>
+          <div class="division-slide">
+            <img src="assets/hardware/hardware5.jpg" alt="Hardware maintenance scene">
+          </div>
+          <div class="division-slide">
+            <video autoplay muted loop playsinline>
+              <source src="assets/videos/hardware.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        <div class="division-media-placeholder">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Awards Timeline -->
+  <div class="awards-section">
+    <div class="awards-title">🏆 Awards</div>
+    <div class="awards-timeline">
+
+      <div class="award-row">
+        <div class="award-year-big">2026</div>
+        <ul class="award-items-list">
+          <li>제주 국제 대학생 EV 자율주행 경진대회 최우수상, 장려상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2025</div>
+        <ul class="award-items-list">
+          <li>HL FMA 자율주행 경진대회 MORAI 부문 대표이사상, 장려상</li>
+          <li>HL FMA 자율주행 경진대회 1/5 부문 장려상</li>
+          <li>제주 국제 대학생 EV 자율주행 경진대회 혁신상, 장려상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2024</div>
+        <ul class="award-items-list">
+          <li>샤크(SHARK) 자율주행대회 우수상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2023</div>
+        <ul class="award-items-list">
+          <li>서울대학교 자율주행 S/W 고도화 대회 혁신상</li>
+          <li>서울 Virtual 자율주행 챌린지 MORAI 특별상</li>
+          <li>제주 국제 대학생 EV 자율주행 경진대회 장려상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2022</div>
+        <ul class="award-items-list">
+          <li>IoT가전 콘소시엄대학 창의적 종합설계 경진대회 우수상</li>
+          <li>창의적 종합설계 경진대회 수상</li>
+          <li>Future Mobility Urban Challenge 대상</li>
+          <li>제주 국제 대학생 EV 자율주행 경진대회 금상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2021</div>
+        <ul class="award-items-list">
+          <li>국제대학생 창작 자동차 경진대회 자율주행 부문 은상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2020</div>
+        <ul class="award-items-list">
+          <li>자율주행 자동차 경진 그랑프리 최우수상</li>
+        </ul>
+      </div>
+
+      <div class="award-row">
+        <div class="award-year-big">2019</div>
+        <ul class="award-items-list">
+          <li>판교 자율주행 대회 동국대 대표</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SPONSOR -->
+<section id="sponsor">
+  <p class="section-tag">Partners</p>
+  <h2 class="section-title">Sponsors</h2>
+  <div class="divider"></div>
+  <p class="section-desc">Organizations supporting MACARON's research and development activities.</p>
+
+  <div class="sponsor-logos">
+    <a class="sponsor-logo-link" href="https://iceed.dongguk.edu/main" target="_blank" rel="noopener">
+      <img class="sponsor-logo-img" src="dongguk-engineering.png" alt="동국대학교 공학교육혁신센터">
+    </a>
+    <div class="sponsor-divider"></div>
+    <a class="sponsor-logo-link" href="https://www.antclabs.com/" target="_blank" rel="noopener">
+      <img class="sponsor-logo-img" src="an.png" alt="antclabs">
+    </a>
+  </div>
+
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <p class="section-tag">news</p>
+  <h2 class="section-title">2026 NEWS</h2>
+  <div class="divider"></div>
+  <p class="section-desc">MACARON의 최신 대회 소식과 주요 성과를 소개합니다.</p>
+
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-meta">
+        <span class="news-tag tag-done">수상</span>
+        <span class="news-date">2026</span>
+      </div>
+      <div class="news-title">🏆 2026 제주 국제 대학생 EV 자율주행 경진대회 최우수상 및 장려상 수상 </div>
+    </div>
+  </div>
+
+  <div class="upcoming-section">
+    <div class="upcoming-title">예정된 대회 및 행사</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-label">2026 국민대학교 자율모빌리티산업전</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-label">HL FMA 자율주행 경진대회</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-label">대학생 창작 모빌리티 경진대회</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-label">2026 자율모빌리티산업전</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-label">대한민국 엔지니어링 페스티벌</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-tag">Get In Touch</p>
+  <h2 class="section-title">Contact</h2>
+  <div class="divider"></div>
+
+  <div class="contact-grid">
+    <div>
+      <p class="contact-desc">
+        Interested in MACARON?<br>
+        We welcome all inquiries — team recruitment, sponsorship, or collaboration.
+      </p>
+      <p class="contact-gen">Dongguk University · MACARON 8th Gen · 2026</p>
+    </div>
+    <div class="contact-links">
+      <a class="contact-link" href="https://www.instagram.com/macaron_dgu/" target="_blank" rel="noopener">
+        <div class="contact-link-info">
+          <div class="contact-link-label">Instagram</div>
+          <div class="contact-link-val">@macaron_dgu</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted)"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+      <a class="contact-link" href="mailto:choish22280@dgu.ac.kr">
+        <div class="contact-link-info">
+          <div class="contact-link-label">Email · Choi Seunghun</div>
+          <div class="contact-link-val">choish22280@dgu.ac.kr</div>
+        </div>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--muted)"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><img src="macaron-clean.png" alt="MACARON"></div>
+  <div class="footer-right">© 2026 MACARON · Dongguk University Autonomous Driving R&amp;D Team</div>
+</footer>
+
+<script>
+  const newsSection = document.querySelector('#news');
+
+  if (newsSection) {
+    const newsObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.35 });
+
+    newsObserver.observe(newsSection);
+  }
+</script>
+
+</body>
+</html>
