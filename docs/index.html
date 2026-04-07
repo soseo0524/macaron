@@ -83,28 +83,111 @@
     }
     .nav-cta:hover { opacity: 0.85; }
 
-    /* ── HERO ── */
-    #home {
+    /* ── INTRO ── */
+    #home,
+    #home-video {
       position: relative;
       width: 100%;
       height: 100vh;
       min-height: 600px;
       overflow: hidden;
+    }
+
+    #home {
+      display: flex;
+      align-items: flex-start;
+      background: #05060a;
+    }
+
+    .intro-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(5, 6, 10, 0.06) 0%, rgba(5, 6, 10, 0.12) 100%),
+        url("assets/awards-bg.jpg") center center / cover no-repeat;
+      z-index: 0;
+    }
+
+    .intro-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 0;
+      z-index: 1;
+      background: linear-gradient(
+        180deg,
+        rgba(5, 6, 10, 0.14) 0%,
+        rgba(5, 6, 10, 0.38) 45%,
+        rgba(5, 6, 10, 0.72) 72%,
+        rgba(5, 6, 10, 0.92) 100%
+      );
+      animation: introOverlayDrop 2.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s forwards;
+    }
+
+    @keyframes introOverlayDrop {
+      from { height: 0; }
+      to { height: 100%; }
+    }
+
+    .intro-copy {
+      position: relative;
+      z-index: 2;
+      padding: 15vh 6% 0;
+      pointer-events: none;
+    }
+
+    .intro-kicker {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(18px);
+      animation: introTextReveal 0.9s ease 1.05s forwards;
+    }
+
+    .intro-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(4.5rem, 11vw, 9rem);
+      font-weight: 800;
+      letter-spacing: -0.08em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 10px 40px rgba(0,0,0,0.42);
+      opacity: 0;
+      transform: translateY(40px);
+      animation: introTextReveal 1.7s cubic-bezier(0.16, 1, 0.3, 1) 1.25s forwards;
+    }
+
+    .intro-car {
+      color: #f59a24;
+      text-shadow: 0 0 28px rgba(245,154,36,0.22);
+    }
+
+    @keyframes introTextReveal {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    #home-video {
       display: flex;
       align-items: flex-end;
     }
 
-    /* fullscreen video */
     .hero-video {
       position: absolute;
       inset: 0;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       object-position: center;
       z-index: 0;
     }
 
-    /* gradient overlay: left darker for text, right shows video */
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -112,14 +195,13 @@
         linear-gradient(to right,
           rgba(5,5,10,0.78) 0%,
           rgba(5,5,10,0.45) 55%,
-          rgba(5,5,10,0.1)  100%),
+          rgba(5,5,10,0.1) 100%),
         linear-gradient(to top,
           rgba(5,5,10,0.7) 0%,
           transparent 40%);
       z-index: 1;
     }
 
-    /* text content — left aligned, bottom-ish */
     .hero-content {
       position: relative;
       z-index: 2;
@@ -127,36 +209,10 @@
       max-width: 720px;
       animation: heroFadeUp 1s ease both;
     }
+
     @keyframes heroFadeUp {
       from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(79,142,247,0.15);
-      border: 1px solid rgba(79,142,247,0.4);
-      border-radius: 100px;
-      padding: 0.38rem 1rem;
-      font-size: 0.76rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.6rem;
-    }
-    .hero-badge::before {
-      content: '';
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse {
-      0%,100% { opacity: 1; } 50% { opacity: 0.3; }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .hero-title {
@@ -197,6 +253,7 @@
       transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
+
     .btn-primary:hover {
       background: #e8eaf0;
       transform: translateY(-2px);
@@ -215,13 +272,14 @@
       text-decoration: none;
       transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
+
     .btn-outline:hover {
       border-color: rgba(255,255,255,0.9);
       color: #fff;
       background: rgba(255,255,255,0.08);
     }
 
-    /* scroll indicator */
+    .intro-scroll,
     .hero-scroll {
       position: absolute;
       bottom: 2.2rem;
@@ -238,6 +296,7 @@
       text-decoration: none;
       animation: bounce 2.5s ease-in-out infinite;
     }
+
     @keyframes bounce {
       0%,100% { transform: translateY(0); }
       50% { transform: translateY(7px); }
@@ -920,8 +979,24 @@
   </ul>
 </nav>
 
-<!-- HERO -->
+<!-- INTRO -->
 <section id="home">
+  <div class="intro-bg"></div>
+  <div class="intro-overlay"></div>
+
+  <div class="intro-copy">
+    <div class="intro-kicker">Dongguk University</div>
+    <h1 class="intro-title">MA<span class="intro-car">CAR</span>ON</h1>
+  </div>
+
+  <a href="#home-video" class="intro-scroll">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    Scroll
+  </a>
+</section>
+
+<!-- HERO VIDEO -->
+<section id="home-video">
   <!-- 배경 영상 -->
   <video class="hero-video" autoplay muted loop playsinline preload="metadata" data-video-key="hero">
     <source src="web.mp4" type="video/mp4">
@@ -951,7 +1026,6 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     Scroll
   </a>
-
 </section>
 
 <!-- ABOUT -->
