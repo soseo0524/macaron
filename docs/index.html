@@ -923,7 +923,7 @@
 <!-- HERO -->
 <section id="home">
   <!-- 배경 영상 -->
-  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata" data-video-key="hero">
     <source src="web.mp4" type="video/mp4">
   </video>
 
@@ -979,7 +979,7 @@
         </div>
       </div>
       <div class="division-media vision-media">
-        <video autoplay muted loop playsinline>
+        <video autoplay muted loop playsinline preload="metadata" data-video-key="vision">
           <source src="assets/videos/vision.mp4" type="video/mp4">
         </video>
       </div>
@@ -999,7 +999,7 @@
         </div>
       </div>
       <div class="division-media planning-media">
-        <video autoplay muted loop playsinline>
+        <video autoplay muted loop playsinline preload="metadata" data-video-key="planning">
           <source src="assets/videos/planning.mp4" type="video/mp4">
         </video>
       </div>
@@ -1036,7 +1036,7 @@
             <img src="assets/hardware/hardware5.jpg" alt="Hardware maintenance scene">
           </div>
           <div class="division-slide">
-            <video autoplay muted loop playsinline>
+            <video autoplay muted loop playsinline preload="metadata" data-video-key="hardware">
               <source src="assets/videos/hardware.mp4" type="video/mp4">
             </video>
           </div>
@@ -1217,6 +1217,24 @@
 </footer>
 
 <script>
+  const CLOUDINARY_VIDEO_URLS = {
+    hero: "https://res.cloudinary.com/dwjl82x87/video/upload/v1775582201/macaron/hero.mp4",
+    vision: "https://res.cloudinary.com/dwjl82x87/video/upload/v1775582199/macaron/vision.mp4",
+    planning: "https://res.cloudinary.com/dwjl82x87/video/upload/v1775582196/macaron/planning.mp4",
+    hardware: "https://res.cloudinary.com/dwjl82x87/video/upload/v1775582194/macaron/hardware.mp4"
+  };
+
+  document.querySelectorAll("video[data-video-key]").forEach((video) => {
+    const key = video.dataset.videoKey;
+    const source = video.querySelector("source");
+    const cloudinaryUrl = CLOUDINARY_VIDEO_URLS[key]?.trim();
+
+    if (!source || !cloudinaryUrl) return;
+
+    source.src = cloudinaryUrl;
+    video.load();
+  });
+
   const newsSection = document.querySelector('#news');
 
   if (newsSection) {
