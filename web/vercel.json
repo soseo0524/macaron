@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/", "destination": "/docs/index.html" },
+    { "source": "/assets/:path*", "destination": "/docs/assets/:path*" },
+    { "source": "/an.png", "destination": "/docs/an.png" },
+    { "source": "/dongguk-engineering.png", "destination": "/docs/dongguk-engineering.png" },
+    { "source": "/macaron-clean.png", "destination": "/docs/macaron-clean.png" },
+    { "source": "/macaron.png", "destination": "/docs/macaron.png" },
+    { "source": "/macaron1.jpg", "destination": "/docs/macaron1.jpg" },
+    { "source": "/web.mp4", "destination": "/docs/web.mp4" }
+  ]
+}
